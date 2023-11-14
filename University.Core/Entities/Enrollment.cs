@@ -14,6 +14,8 @@ namespace University.Core.Entities
         public int Grade { get; set; }
 
         //Conv 1 nullable foreign key!!!!!!
-        //public Student Student { get; set; }
+        
+        //Conv 3 = Conv 1 + Conv 2
+        public Student Student { get; set; }
     }
 }
