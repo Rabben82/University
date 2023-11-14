@@ -15,6 +15,6 @@ namespace University.Persistence.Data
         }
 
         public DbSet<Student> Student { get; set; } = default!;
-        public DbSet<Enrollment> Enrollments { get; set; } = default!;
+       // public DbSet<Enrollment> Enrollments { get; set; } = default!;
     }
 }
