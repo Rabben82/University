@@ -46,7 +46,7 @@ namespace University.Persistence.Migrations
                     b.HasIndex("StudentId")
                         .IsUnique();
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("University.Core.Entities.Course", b =>
@@ -62,7 +62,7 @@ namespace University.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Course", (string)null);
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("University.Core.Entities.Enrollment", b =>
@@ -80,7 +80,7 @@ namespace University.Persistence.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Enrollment", (string)null);
+                    b.ToTable("Enrollment");
                 });
 
             modelBuilder.Entity("University.Core.Entities.Student", b =>
@@ -105,7 +105,7 @@ namespace University.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Student", (string)null);
+                    b.ToTable("Student");
                 });
 
             modelBuilder.Entity("University.Core.Entities.Address", b =>

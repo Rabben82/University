@@ -11,8 +11,8 @@ using University.Persistence.Data;
 namespace University.Persistence.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20231114123839_JunctionTable")]
-    partial class JunctionTable
+    [Migration("20231114135644_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace University.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseStudent");
-                });
 
             modelBuilder.Entity("University.Core.Entities.Address", b =>
                 {
@@ -83,6 +68,24 @@ namespace University.Persistence.Migrations
                     b.ToTable("Course");
                 });
 
+            modelBuilder.Entity("University.Core.Entities.Enrollment", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Enrollment");
+                });
+
             modelBuilder.Entity("University.Core.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -108,21 +111,6 @@ namespace University.Persistence.Migrations
                     b.ToTable("Student");
                 });
 
-            modelBuilder.Entity("CourseStudent", b =>
-                {
-                    b.HasOne("University.Core.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("University.Core.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("University.Core.Entities.Address", b =>
                 {
                     b.HasOne("University.Core.Entities.Student", "Student")
@@ -134,9 +122,35 @@ namespace University.Persistence.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("University.Core.Entities.Enrollment", b =>
+                {
+                    b.HasOne("University.Core.Entities.Course", "Course")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("University.Core.Entities.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("University.Core.Entities.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
             modelBuilder.Entity("University.Core.Entities.Student", b =>
                 {
                     b.Navigation("Address");
+
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }
