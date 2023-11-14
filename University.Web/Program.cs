@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using University.Persistence.Data;
 namespace University.Web
 {
     public class Program
@@ -5,6 +8,8 @@ namespace University.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<UniversityContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("UniversityContext") ?? throw new InvalidOperationException("Connection string 'UniversityContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
