@@ -10,7 +10,6 @@ namespace University.Core.Entities
 {
     public class Enrollment
     {
-        public int Id { get; set; }
         public int Grade { get; set; }
 
         //Conv 1 nullable foreign key!!!!!!
@@ -18,10 +17,13 @@ namespace University.Core.Entities
         //Conv 3 = Conv 1 + Conv 2
         //Conv 4 add foreign key
 
+        //Foreign key
         public int StudentId { get; set; }
-        public Student Student { get; set; }
-
         public int CourseId { get; set; }
+
+
+        //Navigation property
+        public Student Student { get; set; }
         public Course Course { get; set; }
     }
 }

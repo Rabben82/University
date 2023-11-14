@@ -14,5 +14,6 @@ namespace University.Core.Entities
         public string Title { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Student> Students { get; set; }
     }
 }

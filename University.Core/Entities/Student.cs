@@ -22,5 +22,6 @@ namespace University.Core.Entities
 
         //Conv 2 samma som Conv 1
         public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Course>  Courses { get; set; }
     }
 }
