@@ -46,7 +46,7 @@ namespace University.Persistence.Migrations
                     b.HasIndex("StudentId")
                         .IsUnique();
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("University.Core.Entities.Student", b =>
@@ -71,7 +71,7 @@ namespace University.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Student");
+                    b.ToTable("Student", (string)null);
                 });
 
             modelBuilder.Entity("University.Core.Entities.Address", b =>
