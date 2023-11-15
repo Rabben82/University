@@ -33,21 +33,25 @@ namespace University.Web.Controllers
             //var t3 = db.Student.Include(s => s.Enrollments).ThenInclude(e => e.Course).ToList();
             //var c = db.Student.Include(s => s.Courses).ToList();
 
-            var model = db.Student.OrderByDescending(s => s.Id)
-                                  .Select(s => new StudentIndexViewModel
-                                  {
-                                      Id = s.Id,
-                                      Avatar = s.Avatar,
-                                      NameFullName = s.Name.FullName,
-                                      AddressStreet = s.Address.Street,
-                                      //CourseInfos = s.Enrollments.Select(e => new CourseInfo
-                                      //{
-                                      //     CourseName = e.Course.Title,
-                                      //     Grade = e.Grade
-                                      //})
+            //var model = db.Student.OrderByDescending(s => s.Id)
+            //                      .Select(s => new StudentIndexViewModel
+            //                      {
+            //                          Id = s.Id,
+            //                          Avatar = s.Avatar,
+            //                          NameFullName = s.Name.FullName,
+            //                          AddressStreet = s.Address.Street,
+            //                          //CourseInfos = s.Enrollments.Select(e => new CourseInfo
+            //                          //{
+            //                          //     CourseName = e.Course.Title,
+            //                          //     Grade = e.Grade
+            //                          //})
 
-                                  })
-                                  .Take(5);
+            //                      })
+            //                      .Take(5);
+
+            var model = mapper.ProjectTo<StudentIndexViewModel>(db.Student)
+                              .OrderByDescending(x => x.Id)
+                              .Take(5);
             
 
             return View(await model.ToListAsync());

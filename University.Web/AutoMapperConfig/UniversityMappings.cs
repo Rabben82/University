@@ -11,6 +11,8 @@ namespace University.Web.AutoMapperConfig
                 //dest => dest.Street,
                 //from => from.MapFrom(s => s.Avatar))
                 .ReverseMap();
+
+            CreateMap<Student, StudentIndexViewModel>();
         }
     }
 }
