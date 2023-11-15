@@ -14,6 +14,7 @@ namespace University.Persistence.Data
         public UniversityContext(DbContextOptions<UniversityContext> options)
             : base(options)
         {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbSet<Student> Student { get; set; } = default!;
