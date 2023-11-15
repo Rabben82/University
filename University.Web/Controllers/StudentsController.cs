@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bogus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,13 @@ namespace University.Web.Controllers
     public class StudentsController : Controller
     {
         private readonly UniversityContext db;
+        private readonly Faker faker;
 
         public StudentsController(UniversityContext context)
         {
             db = context;
+            
+            faker = new Faker();
         }
 
         // GET: Students
@@ -27,7 +31,7 @@ namespace University.Web.Controllers
             //var t3 = db.Student.Include(s => s.Enrollments).ThenInclude(e => e.Course).ToList();
             //var c = db.Student.Include(s => s.Courses).ToList();
 
-            var model = db.Student.AsNoTracking()
+            var model = db.Student.OrderByDescending(s => s.Id)
                                   .Select(s => new StudentIndexViewModel
                                   {
                                       Id = s.Id,
@@ -39,8 +43,9 @@ namespace University.Web.Controllers
                                       //     CourseName = e.Course.Title,
                                       //     Grade = e.Grade
                                       //})
-                                     
-                                  });
+
+                                  })
+                                  .Take(5);
             
 
             return View(await model.ToListAsync());
@@ -76,15 +81,25 @@ namespace University.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Avatar,FirstName,LastName,Email")] Student student)
+        public async Task<IActionResult> Create(StudentCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var student = new Student(faker.Internet.Avatar(), new Name(viewModel.FirstName, viewModel.LastName), viewModel.Email)
+                {
+                    Address = new Address
+                    {
+                        City = viewModel.City,
+                        Street = viewModel.Street,
+                        ZipCode = viewModel.ZipCode
+                    }
+                };
+
                 db.Add(student);
                 await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(viewModel);
         }
 
         // GET: Students/Edit/5
