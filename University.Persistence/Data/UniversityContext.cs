@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using University.Core.Entities;
+using University.Persistence.Configurations;
 
 namespace University.Persistence.Data
 {
@@ -21,31 +23,12 @@ namespace University.Persistence.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new StudentConfigurations());
+
             //modelBuilder.Entity<Student>().OwnsOne(s => s.Name).ToTable("Name");
-            modelBuilder.Entity<Student>()
-                      .OwnsOne(s => s.Name)
-                      .Property(n => n.FirstName)
-                      .HasColumnName("FirstName");
-
-            modelBuilder.Entity<Student>()
-                        .OwnsOne(s => s.Name)
-                        .Property(n => n.LastName)
-                        .HasColumnName("LastName");
 
 
-            modelBuilder.Entity<Student>().HasOne(s => s.Address)
-                .WithOne(a => a.Student)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Student>()
-                .HasMany(s => s.Courses)
-                .WithMany(c => c.Students)
-                .UsingEntity<Enrollment>(
-                    e => e.HasOne(e => e.Course).WithMany(c => c.Enrollments),
-                    e => e.HasOne(e => e.Student).WithMany(c => c.Enrollments),
-                    e => e.HasKey(e => new { e.StudentId, e.CourseId }));
-
-           // modelBuilder.Entity<Enrollment>().HasKey(e => new { e.StudentId, e.CourseId });
+            // modelBuilder.Entity<Enrollment>().HasKey(e => new { e.StudentId, e.CourseId });
         }
     }
 }
