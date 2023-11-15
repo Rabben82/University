@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Bogus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,12 +15,13 @@ namespace University.Web.Controllers
     public class StudentsController : Controller
     {
         private readonly UniversityContext db;
+        private readonly IMapper mapper;
         private readonly Faker faker;
 
-        public StudentsController(UniversityContext context)
+        public StudentsController(UniversityContext context, IMapper mapper)
         {
             db = context;
-            
+            this.mapper = mapper;
             faker = new Faker();
         }
 
@@ -36,8 +38,8 @@ namespace University.Web.Controllers
                                   {
                                       Id = s.Id,
                                       Avatar = s.Avatar,
-                                      FullName = s.Name.FullName,
-                                      Street = s.Address.Street,
+                                      NameFullName = s.Name.FullName,
+                                      AddressStreet = s.Address.Street,
                                       //CourseInfos = s.Enrollments.Select(e => new CourseInfo
                                       //{
                                       //     CourseName = e.Course.Title,
@@ -85,15 +87,18 @@ namespace University.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var student = new Student(faker.Internet.Avatar(), new Name(viewModel.FirstName, viewModel.LastName), viewModel.Email)
-                {
-                    Address = new Address
-                    {
-                        City = viewModel.City,
-                        Street = viewModel.Street,
-                        ZipCode = viewModel.ZipCode
-                    }
-                };
+                //var student = new Student(faker.Internet.Avatar(), new Name(viewModel.NameFirstName, viewModel.NameLastName), viewModel.Email)
+                //{
+                //    Address = new Address
+                //    {
+                //        City = viewModel.AddressCity,
+                //        Street = viewModel.AddressStreet,
+                //        ZipCode = viewModel.AddressZipCode
+                //    }
+                //};
+
+                var student = mapper.Map<Student>(viewModel);
+                student.Avatar = faker.Internet.Avatar();
 
                 db.Add(student);
                 await db.SaveChangesAsync();

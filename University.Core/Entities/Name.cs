@@ -8,6 +8,12 @@ namespace University.Core.Entities
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";
 
+        private Name()
+        {
+            FirstName = null!;
+            LastName = null!;
+        }
+
         public Name(string firstName, string lastName)
         {
             FirstName = firstName;
