@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#nullable disable
+//#nullable disable
 
 namespace University.Core.Entities
 {
@@ -18,10 +18,18 @@ namespace University.Core.Entities
         public string Email { get; set; }
 
         //Nav prop
-        public Address Address { get; set; }
+        public Address Address { get; set; } = new Address();
 
         //Conv 2 samma som Conv 1
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<Course>  Courses { get; set; }
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<Course>  Courses { get; set; } = new List<Course>();
+
+        public Student(string avatar, string firstName, string lastName, string email)
+        {
+            Avatar = avatar;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
     }
 }
