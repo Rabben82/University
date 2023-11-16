@@ -16,8 +16,8 @@ namespace University.Core.Entities
 
         public string Email { get; set; }
 
-        //Nav prop
-        public Address Address { get; set; } = new Address();
+		//Nav prop
+		public Address Address { get; set; } = new Address();
 
         //Conv 2 samma som Conv 1
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();

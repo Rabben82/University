@@ -59,21 +59,52 @@ namespace University.Web.Controllers
         }
 
         // GET: Students/Details/5
+        public async Task<IActionResult> CourseDetails(int? courseId)
+        {
+
+			if (courseId == null)
+			{
+				return NotFound();
+			}
+
+
+			var studentsInCourse = await db.Student
+				.Where(s => s.Enrollments.Any(e => e.CourseId == courseId))
+				.ToListAsync();
+
+			var model = new CourseDetailsViewModel
+			{
+				Students = studentsInCourse
+			};
+
+			return View(model);
+		}
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || db.Student == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await db.Student
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
+			var model = await db.Student.Select(s => new StudentDetailsViewModel()
+			{
+				Id = s.Id,
+				Name = s.Name,
+				Address = s.Address,
+				Avatar = s.Avatar,
+				Email = s.Email,
+				Courses = s.Courses,
+				Enrollments = s.Enrollments,
+                CourseInfos = s.Enrollments.Select(c => new CourseInfo()
+                {
+                    CourseName = c.Course.Title,
+                    Grade = c.Grade
+                })
 
-            return View(student);
+			}).FirstOrDefaultAsync(m => m.Id == id);
+
+            return View(model);
         }
 
         // GET: Students/Create

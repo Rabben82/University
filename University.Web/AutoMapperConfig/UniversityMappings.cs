@@ -13,6 +13,7 @@ namespace University.Web.AutoMapperConfig
                 .ReverseMap();
 
             CreateMap<Student, StudentIndexViewModel>();
+
         }
     }
 }
