@@ -90,14 +90,15 @@ namespace University.Web.Controllers
 			var model = await db.Student.Select(s => new StudentDetailsViewModel()
 			{
 				Id = s.Id,
-				Name = s.Name,
+				FirstName = s.Name.FirstName,
+				LastName = s.Name.LastName,
 				Address = s.Address,
 				Avatar = s.Avatar,
 				Email = s.Email,
-				Courses = s.Courses,
-				Enrollments = s.Enrollments,
+				CourseCount = s.Courses.Count,
                 CourseInfos = s.Enrollments.Select(c => new CourseInfo()
                 {
+                    Id = c.CourseId,
                     CourseName = c.Course.Title,
                     Grade = c.Grade
                 })

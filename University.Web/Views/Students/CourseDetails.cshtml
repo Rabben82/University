@@ -13,7 +13,11 @@
 		<dd class="col-sm-10">
 			@foreach (var student in Model.Students)
 			{
-				<p>@Html.ActionLink(student.Name.FullName, "Details", "Students", new { id = student.Id }, null)</p>
+				<p>
+					<a asp-action="Details" asp-controller="Students" asp-route-id="@student.Id">
+						@student.Name.FullName
+					</a>
+				</p>
 			}
 		</dd>
 	</dl>

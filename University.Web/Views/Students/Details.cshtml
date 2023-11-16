@@ -17,16 +17,16 @@
 			<img src="@Html.DisplayFor(model => model.Avatar)" alt="Profile image" />
 		</dd>
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Name.FirstName)
+			@Html.DisplayNameFor(model => model.FirstName)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Name.FirstName)
+			@Html.DisplayFor(model => model.FirstName)
 		</dd>
 		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Name.LastName)
+			@Html.DisplayNameFor(model => model.LastName)
 		</dt>
 		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Name.LastName)
+			@Html.DisplayFor(model => model.LastName)
 		</dd>
 		<dt class="col-sm-2">
 			@Html.DisplayNameFor(model => model.Email)
@@ -62,11 +62,14 @@
 			@Html.DisplayNameFor(model => model.CourseInfos)
 		</dt>
 		<dd class="col-sm-10">
-			@foreach (var course in Model.Courses)
+			@foreach (var course in Model.CourseInfos)
 			{
 				<p>
-					@Html.ActionLink(course.Title, "CourseDetails", "Students", new { courseId = course.Id }, null)
-					<span><strong>Grade:</strong> @Model.Enrollments.FirstOrDefault(e => e.CourseId == course.Id)?.Grade</span>
+					<a asp-action="CourseDetails" asp-controller="Students" asp-route-courseId="@course.Id">
+						@course.CourseName
+					</a>
+
+					<span><strong>Grade: </strong>@course.Grade</span>
 				</p>
 			}
 		</dd>
